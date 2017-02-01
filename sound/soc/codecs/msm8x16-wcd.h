@@ -1,4 +1,4 @@
-/* Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2014-2015, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -36,6 +36,11 @@
 #define MSM8X16_TOMBAK_LPASS_DIGCODEC_CBCR			0x0181C0B0
 #define MSM8X16_TOMBAK_LPASS_DIGCODEC_AHB_CBCR			0x0181C0B4
 
+#ifdef CONFIG_MACH_WT88047
+#define EXT_SPK_AMP_GPIO	(902+117)
+#define EXT_SPK_AMP_HEADSET_GPIO	(902+8)
+#endif
+
 #define MSM8X16_CODEC_NAME "msm8x16_wcd_codec"
 
 #define MSM8X16_WCD_IS_DIGITAL_REG(reg) \
@@ -67,22 +72,9 @@ enum codec_versions {
 	CONGA,
 	CAJON,
 	CAJON_2_0,
-	DIANGU,
 	UNSUPPORTED,
 };
 
-/* Support different hph modes */
-enum {
-	NORMAL_MODE = 0,
-	HD2_MODE,
-};
-
-/* Codec supports 1 compander */
-enum {
-	COMPANDER_NONE = 0,
-	COMPANDER_1, /* HPHL/R */
-	COMPANDER_MAX,
-};
 
 enum wcd_curr_ref {
 	I_h4_UA = 0,
@@ -227,10 +219,12 @@ struct msm8916_asoc_mach_data {
 	int codec_type;
 	int ext_pa;
 	int us_euro_gpio;
+#ifdef CONFIG_MACH_JALEBI
+	int ext_spk_amp_gpio;
+#endif
 	int spk_ext_pa_gpio;
 	int mclk_freq;
 	int lb_mode;
-	int afe_clk_ver;
 	u8 micbias1_cap_mode;
 	u8 micbias2_cap_mode;
 	atomic_t mclk_rsc_ref;
@@ -246,6 +240,7 @@ struct msm8916_asoc_mach_data {
 	void __iomem *vaddr_gpio_mux_quin_ctl;
 	void __iomem *vaddr_gpio_mux_pcm_ctl;
 	struct on_demand_supply wsa_switch_supply;
+	struct snd_info_entry *codec_root;
 };
 
 struct msm8x16_wcd_pdata {
@@ -299,10 +294,9 @@ struct msm8x16_wcd_priv {
 	bool clock_active;
 	bool config_mode_active;
 	u16 boost_option;
-	/* mode to select hd2 */
-	u32 hph_mode;
-	/* compander used for each rx chain */
-	u32 comp_enabled[MSM8X16_WCD_RX_MAX];
+#ifdef CONFIG_MACH_JALEBI
+	u16 ext_spk_mode;
+#endif
 	bool spk_boost_set;
 	bool ear_pa_boost_set;
 	bool ext_spk_boost_set;
@@ -315,7 +309,6 @@ struct msm8x16_wcd_priv {
 	struct fw_info *fw_data;
 	struct blocking_notifier_head notifier;
 	int (*codec_spk_ext_pa_cb)(struct snd_soc_codec *codec, int enable);
-	int (*codec_hph_comp_gpio)(bool enable);
 	unsigned long status_mask;
 	struct wcd_imped_i_ref imped_i_ref;
 	enum wcd_mbhc_imp_det_pin imped_det_pin;
@@ -329,14 +322,12 @@ extern int msm8x16_wcd_hs_detect(struct snd_soc_codec *codec,
 
 extern void msm8x16_wcd_hs_detect_exit(struct snd_soc_codec *codec);
 
-extern void msm8x16_update_int_spk_boost(bool enable);
+#ifdef CONFIG_MACH_WT88047
+extern int msm8x16_wcd_restart_mbhc(struct snd_soc_codec *codec);
+#endif
 
 extern void msm8x16_wcd_spk_ext_pa_cb(
 		int (*codec_spk_ext_pa)(struct snd_soc_codec *codec,
 		int enable), struct snd_soc_codec *codec);
-
-extern void msm8x16_wcd_hph_comp_cb(
-		int (*codec_hph_comp_gpio)(bool enable),
-		struct snd_soc_codec *codec);
 #endif
 
