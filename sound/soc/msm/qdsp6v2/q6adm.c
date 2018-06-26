@@ -27,6 +27,7 @@
 #include <sound/msm-dts-eagle.h>
 #include "msm-dts-srs-tm-config.h"
 #include <sound/asound.h>
+#include <sound/adsp_err.h>
 
 #define TIMEOUT_MS 1000
 
