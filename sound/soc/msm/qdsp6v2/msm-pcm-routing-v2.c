@@ -150,7 +150,7 @@ static void msm_pcm_routing_cfg_pp(int port_id, int copp_idx, int topology,
 					__func__, topology, port_id, rc);
 		}
 		break;
-	case ADM_CMD_COPP_OPEN_TOPOLOGY_ID_DTS_HPX:
+	case ADM_CMD_COPP_OPEN_TOPOLOGY_ID_DTS_HPX_1:
 		pr_debug("%s: DTS_EAGLE_COPP_TOPOLOGY_ID\n", __func__);
 		msm_dts_eagle_init_post(port_id, copp_idx);
 		break;
@@ -185,7 +185,7 @@ static void msm_pcm_routing_deinit_pp(int port_id, int topology)
 			msm_dolby_dap_deinit(port_id);
 		}
 		break;
-	case ADM_CMD_COPP_OPEN_TOPOLOGY_ID_DTS_HPX:
+	case ADM_CMD_COPP_OPEN_TOPOLOGY_ID_DTS_HPX_1:
 		pr_debug("%s: DTS_EAGLE_COPP_TOPOLOGY_ID\n", __func__);
 		msm_dts_eagle_deinit_post(port_id, topology);
 		break;
@@ -1946,7 +1946,7 @@ static int msm_routing_ec_ref_rx_put(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
-static char *const ec_ref_rx[] = { "None", "SLIM_RX", "I2S_RX",
+static const char *const ec_ref_rx[] = { "None", "SLIM_RX", "I2S_RX",
 	"PRI_MI2S_TX", "SEC_MI2S_TX",
 	"TERT_MI2S_TX", "QUAT_MI2S_TX", "SEC_I2S_RX", "PROXY_RX"};
 static const struct soc_enum msm_route_ec_ref_rx_enum[] = {
