@@ -134,7 +134,7 @@
 	qcom,v-cutoff-uv = <3300000>;
 	qcom,max-voltage-uv = <4350000>;
 	qcom,shutdown-soc-valid-limit = <10>;
-	qcom,disable-bms;
+	qcom,enable-bms;
 };
 
 &pm8916_pwm {
