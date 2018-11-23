@@ -38,6 +38,7 @@
 
 #include <sound/apr_audio-v2.h>
 #include <sound/q6asm-v2.h>
+#include <sound/q6core.h>
 #include <sound/q6audio-v2.h>
 #include <sound/audio_cal_utils.h>
 #include <sound/msm-dts-eagle.h>
