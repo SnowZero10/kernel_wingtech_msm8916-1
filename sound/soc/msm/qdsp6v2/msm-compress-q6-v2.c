@@ -186,6 +186,14 @@ static unsigned int supported_sample_rates[] = {
 	88200, 96000, 176400, 192000
 };
 
+struct query_audio_effect {
+	uint32_t mod_id;
+	uint32_t parm_id;
+	uint32_t size;
+	uint32_t offset;
+	uint32_t device;
+};
+
 struct msm_compr_audio_effects {
 	struct bass_boost_params bass_boost;
 	struct pbe_params pbe;
